@@ -1,0 +1,37 @@
+<form>
+  <table>
+    <tr>
+      <th><button (click)="addColumns()">add Columns</button></th>
+    </tr>
+    @for (col of columns; track col.columnId) {
+    <tr>
+      <td>
+        <label>Column Name</label
+        ><input
+          name="columnName-{{ col.columnId }}"
+          [(ngModel)]="col.columnName"
+        />
+      </td>
+      <td>
+        <label>Column Type</label
+        ><input
+          name="columnType-{{ col.columnId }}"
+          [(ngModel)]="col.columnType"
+        />
+      </td>
+      <td>
+        <label>Column Length</label
+        ><input
+          name="columnLength-{{ col.columnId }}"
+          [(ngModel)]="col.columnLength"
+        />
+      </td>
+      <td>
+        <button (click)="removeColumn(col)">Remove</button>
+      </td>
+    </tr>
+    }
+  </table>
+  <button (click)="saveTable()">Save Table</button>
+  <button (click)="cancelChanges()">Cancel Changes</button>
+</form>
