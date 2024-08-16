@@ -1,4 +1,32 @@
-<div><button (click)="addTable()">AddTable</button></div>
+<div style="display: flex">
+  <div>
+    <button mat-raised-button (click)="addTable()">AddTable</button>
+  </div>
+  <div>
+    <button
+      mat-raised-button
+      [disabled]="arrayOfRefTables.length == 0"
+      (click)="generateScript()"
+    >
+      Generate Script
+    </button>
+  </div>
+  <div>
+    <button
+      mat-raised-button
+      [disabled]="arrayOfRefTables.length == 0"
+      (click)="generateShema()"
+    >
+      Generate Shema
+    </button>
+  </div>
+</div>
 
-<ng-template #viewContainerRef></ng-template>
-<!-- <app-table-relation></app-table-relation> -->
+<mat-grid-list cols="1" rowHeight="2:1">
+  <mat-grid-tile style="background-color: lightgray"
+    ><ng-template #viewContainerRef></ng-template
+  ></mat-grid-tile>
+  <mat-grid-tile #matGidCol style="background-color: F8F9FA"
+    ><div id="canvas" #canvas></div
+  ></mat-grid-tile>
+</mat-grid-list>

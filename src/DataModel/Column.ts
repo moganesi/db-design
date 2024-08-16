@@ -3,4 +3,5 @@ export class Column {
   columnName!: string;
   columnType!: string;
   columnLength!: number;
+  primaryKey!: boolean;
 }

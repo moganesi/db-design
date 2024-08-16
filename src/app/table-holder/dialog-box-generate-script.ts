@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Column } from '../../DataModel/Column';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
@@ -18,15 +18,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
-
-class DatabaseDatatype {
-  typeId!: string;
-  typeName!: string;
-}
+import { DialogData } from '../../DataModel/DialogData';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'cdk-dialog',
-  templateUrl: 'dialog.html',
+  templateUrl: 'dialog-script.html',
   // style: 'cdk-dialog-overview-example-dialog.css',
   standalone: true,
   imports: [
@@ -43,40 +40,14 @@ class DatabaseDatatype {
     MatDialogClose,
   ],
 })
-export class DialogBoxAddColumns {
-  databaseDatatypes = ['int', 'varchar'];
+export class DialogBoxGeneratScript {
+  constructor(private clipboard: Clipboard) {}
+  readonly dialogRef = inject(MatDialogRef<DialogBoxGeneratScript>);
+  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+  // readonly animal = model(this.data.animal);
 
-  removeColumn(col: Column) {
-    const index = this.columns.indexOf(col);
-    this.columns.splice(index, 1);
-  }
-  tableName!: string;
-  columns!: Array<Column>;
-  addColumns() {
-    const maxColId =
-      Math.max(...this.columns.map((c: Column) => c.columnId)) + 1;
-    console.log(maxColId);
-
-    this.columns.push({
-      columnId: maxColId,
-      columnName: '',
-      columnType: '',
-      columnLength: 0,
-      primaryKey: false,
-    });
-    console.log(this.columns);
-  }
-  saveTable(): void {
-    this.dialogRef.close(this.tableName);
-  }
-  cancelChanges() {
-    this.dialogRef.close('cancelled');
-  }
-  constructor(
-    public dialogRef: DialogRef<string>,
-    @Inject(DIALOG_DATA) public data: ObjectToPassToDialogBoxEditCol
-  ) {
-    this.tableName = data.tableName;
-    this.columns = data.columns;
+  onCopy(): void {
+    this.clipboard.copy(this.data.script);
+    this.dialogRef.close();
   }
 }

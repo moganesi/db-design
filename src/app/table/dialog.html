@@ -1,37 +1,94 @@
-<form>
-  <table>
-    <tr>
-      <th><button (click)="addColumns()">add Columns</button></th>
-    </tr>
-    @for (col of columns; track col.columnId) {
-    <tr>
-      <td>
-        <label>Column Name</label
-        ><input
-          name="columnName-{{ col.columnId }}"
-          [(ngModel)]="col.columnName"
-        />
-      </td>
-      <td>
-        <label>Column Type</label
-        ><input
-          name="columnType-{{ col.columnId }}"
-          [(ngModel)]="col.columnType"
-        />
-      </td>
-      <td>
-        <label>Column Length</label
-        ><input
-          name="columnLength-{{ col.columnId }}"
-          [(ngModel)]="col.columnLength"
-        />
-      </td>
-      <td>
-        <button (click)="removeColumn(col)">Remove</button>
-      </td>
-    </tr>
-    }
-  </table>
-  <button (click)="saveTable()">Save Table</button>
-  <button (click)="cancelChanges()">Cancel Changes</button>
-</form>
+<div
+  style="
+    width: 900px;
+    margin-left: -250px;
+    background-color: rgb(240, 236, 236);
+    opacity: 1;
+    border-radius: 15px;
+  "
+>
+  <h2 style="text-align: center">Edit Table</h2>
+  <mat-dialog-content>
+    <form>
+      <table style="margin-left: 25px">
+        <tr>
+          <th>
+            <button mat-raised-button (click)="addColumns()">
+              add Columns
+            </button>
+          </th>
+          <th>
+            <mat-form-field>
+              <mat-label>Table Name</mat-label>
+              <input
+                name="tableName-{{ tableName}}"
+                matInput
+                type="text"
+                [(ngModel)]="tableName"
+              />
+            </mat-form-field>
+          </th>
+        </tr>
+        @for (col of columns; track col.columnId) {
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>Column Name</mat-label>
+              <input
+                name="columnName-{{ col.columnId }}"
+                matInput
+                type="text"
+                [(ngModel)]="col.columnName"
+              />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field>
+              <mat-label>Column Type</mat-label>
+              <mat-select
+                [(ngModel)]="col.columnType"
+                name="columnType-{{ col.columnId }}"
+              >
+                @for (type of databaseDatatypes; track type) {
+                <mat-option [value]="type">{{type}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field>
+              <mat-label>Column Length</mat-label>
+              <input
+                name="columnLength-{{ col.columnId }}"
+                matInput
+                type="text"
+                [(ngModel)]="col.columnLength"
+              />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-checkbox
+              class="example-margin"
+              [checked]="col.primaryKey"
+              (change)="col.primaryKey=!col.primaryKey"
+            >
+              Primary Key
+            </mat-checkbox>
+          </td>
+          <td>
+            <button mat-raised-button (click)="removeColumn(col)">
+              Remove
+            </button>
+          </td>
+        </tr>
+        }
+      </table>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions style="display: flex">
+    <button mat-raised-button cdkFocusInitial (click)="saveTable()">
+      Save Table
+    </button>
+    <button mat-raised-button (click)="cancelChanges()">Cancel Changes</button>
+  </mat-dialog-actions>
+</div>

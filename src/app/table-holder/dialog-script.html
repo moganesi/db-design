@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Database Script</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <textarea id="w3review" name="w3review" rows="10" cols="20">
+      {{data.script}}
+    </textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCopy()">Copy</button>
+</mat-dialog-actions>

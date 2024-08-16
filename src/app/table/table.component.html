@@ -1,29 +1,56 @@
-<div cdkDrag #table>
-  <div class="example-handle" cdkDragHandle>
-    <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+<div cdkDrag #table style="border: solid; border-radius: 15px">
+  <div>
+    <svg
+      cdkDragHandle
+      width="24px"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      style="cursor: grab"
+    >
       <path
         d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"
       ></path>
       <path d="M0 0h24v24H0z" fill="none"></path>
     </svg>
   </div>
+  <div style="display: flex; justify-content: space-between">
+    <span>{{ tableName }}</span>
+    <button mat-raised-button class="shrink-2x" (click)="editTable()">
+      Edit Table
+    </button>
+    <button mat-raised-button class="shrink-2x" (click)="deleteTable()">
+      Delete Table
+    </button>
+  </div>
   <table>
     <tr>
-      <th>{{ tableName }}</th>
-      <th><button (click)="editColumns()">Edit Columns</button></th>
-      <th>
-        <div><button (click)="deleteTable()">DeleteTable</button></div>
-      </th>
+      <th>Col Name</th>
+      <th>Col Type</th>
+      <th>Col Length</th>
     </tr>
     @for (col of columns; track col.columnId) {
-    <tr
-      cdkDropList
-      (cdkDropListDropped)="drop($event)"
-      [cdkDropListData]="columns"
-    >
-      <td cdkDrag>{{ col.columnName }}</td>
+    <tr>
+      <td id="primaryKey" draggable="true" (dragstart)="drag($event)">
+        @if (col.primaryKey) {<span>&#9756;</span>} {{ col.columnName }}
+      </td>
       <td>{{ col.columnType }}</td>
-      <td>{{ col.columnLength }}</td>
+      <td>@if (col.columnLength >-1) {{{ col.columnLength }}}</td>
+    </tr>
+    }
+  </table>
+  <table (drop)="drop($event)" (dragover)="dragOver($event)">
+    <tr>
+      <th>ForeignKeys</th>
+    </tr>
+    @for (col of foreignKeys; track col.foreignKeyId) {
+    <tr>
+      <td id="foreignKeys">
+        {{ col.foreignKeyColumnName }}
+      </td>
+      <td>{{ col.referencedTableName }}</td>
+      <td>
+        <button (click)="removeForeignKey(col)">Remove</button>
+      </td>
     </tr>
     }
   </table>
