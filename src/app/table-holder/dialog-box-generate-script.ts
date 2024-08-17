@@ -43,6 +43,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 export class DialogBoxGeneratScript {
   constructor(private clipboard: Clipboard) {}
   readonly dialogRef = inject(MatDialogRef<DialogBoxGeneratScript>);
+  // this comes from interface DialogData in models folder
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
   // readonly animal = model(this.data.animal);
 
